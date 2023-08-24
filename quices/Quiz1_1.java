@@ -3,7 +3,6 @@ import java.util.Scanner;
 public class Quiz1_1 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Ingrese un número: ");
         int n = scanner.nextInt();
         
         for (int i = 1; i <= n; i++) {
