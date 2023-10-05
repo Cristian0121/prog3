@@ -1,14 +1,1 @@
 
-class Mercado {
-    LinkedList<Integer> lista = new LinkedList<>();
-    int capacidad = 5;
-
-    public void producir(int valor) {
-        synchronized (this) {
-            if (lista.size() < capacidad) {
-                System.out.println("Productor produjo: " + valor);
-                lista.add(valor);
-                System.out.println("Estructura: " + lista);
-            }
-        }
-    }
