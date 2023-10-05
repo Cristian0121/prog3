@@ -1,0 +1,130 @@
+// Presentado por:
+// Cristian Enrique Quintero Gualdron
+// Juan Diego Rojas Lopez
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+class Temporizador extends TimerTask {
+    String mensaje;
+
+    public Temporizador(String mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    public void run() {
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+}
+
+public class TemporizadorGUI extends JFrame {
+    private Timer timer;
+    private int contador;
+    private List<Temporizador> temporizadores;
+
+    private JTextField mensajeField;
+    private JTextField tiempoField;
+    private JButton crearButton;
+    private JButton detenerButton;
+    private JButton reiniciarButton;
+
+    public TemporizadorGUI() {
+        super("Temporizador GUI");
+        setSize(400, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        timer = new Timer();
+        contador = 0;
+        temporizadores = new ArrayList<>();
+
+        JPanel panel = new JPanel(new GridLayout(4, 2));
+        JLabel mensajeLabel = new JLabel("Mensaje:");
+        JLabel tiempoLabel = new JLabel("Tiempo (ms):");
+        mensajeField = new JTextField();
+        tiempoField = new JTextField();
+        crearButton = new JButton("Crear Temporizador");
+        detenerButton = new JButton("Detener Temporizador");
+        reiniciarButton = new JButton("Reiniciar Temporizador");
+
+        crearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                contador++;
+                String mensaje = mensajeField.getText();
+                long tiempoEspera = Long.parseLong(tiempoField.getText());
+                Temporizador tarea = new Temporizador(mensaje);
+                temporizadores.add(tarea);
+                timer.schedule(tarea, tiempoEspera);
+                mensajeField.setText("");
+                tiempoField.setText("");
+                JOptionPane.showMessageDialog(null, "Se ha creado el temporizador " + contador + " con éxito.");
+            }
+        });
+
+        detenerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String mensajeDetener = JOptionPane.showInputDialog("Ingrese el mensaje del temporizador que desea detener:");
+                for (Temporizador tarea : temporizadores) {
+                    if (tarea.mensaje.equals(mensajeDetener)) {
+                        tarea.cancel();
+                        temporizadores.remove(tarea);
+                        JOptionPane.showMessageDialog(null, "Se ha detenido el temporizador.");
+                        return;
+                    }
+                }
+                JOptionPane.showMessageDialog(null, "Temporizador no encontrado.");
+            }
+        });
+
+        reiniciarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String mensajeReiniciar = JOptionPane.showInputDialog("Ingrese el mensaje del temporizador que desea reiniciar:");
+                for (Temporizador tarea : temporizadores) {
+                    if (tarea.mensaje.equals(mensajeReiniciar)) {
+                        tarea.cancel();
+                        temporizadores.remove(tarea);
+                        String mensaje = mensajeField.getText();
+                        long tiempoEspera = Long.parseLong(tiempoField.getText());
+                        Temporizador nuevaTarea = new Temporizador(mensaje);
+                        temporizadores.add(nuevaTarea);
+                        timer.schedule(nuevaTarea, tiempoEspera);
+                        mensajeField.setText("");
+                        tiempoField.setText("");
+                        JOptionPane.showMessageDialog(null, "Se ha reiniciado el temporizador.");
+                        return;
+                    }
+                }
+                JOptionPane.showMessageDialog(null, "Temporizador no encontrado.");
+            }
+        });
+
+        panel.add(mensajeLabel);
+        panel.add(mensajeField);
+        panel.add(tiempoLabel);
+        panel.add(tiempoField);
+        panel.add(crearButton);
+        panel.add(detenerButton);
+        panel.add(reiniciarButton);
+
+        add(panel);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                TemporizadorGUI gui = new TemporizadorGUI();
+                gui.setVisible(true);
+            }
+        });
+    }
+}
