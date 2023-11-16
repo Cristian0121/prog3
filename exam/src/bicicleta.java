@@ -1,26 +1,16 @@
 
 import javax.swing.Timer;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
-/**
- *
- * @author crist
- */
 public class bicicleta extends javax.swing.JFrame {
  
     private int speed = 0;
     private int metros = 0;
     private int pedalPresi = 0;
     private boolean pedal1Activo = true;
+   
     int a;
      Timer tiempo = new Timer(1000, e -> updateIndicators());
-    /**
-     * Creates new form bicicleta
-     */
+    
     public bicicleta() {
         initComponents();
     }
@@ -28,13 +18,8 @@ public class bicicleta extends javax.swing.JFrame {
     private void pedalPresionado() {
       
         pedalPresi++;
-
-      
-        pedal1Activo = !pedal1Activo;
-
-      
-        speed += 5;
-        metros += 2;
+         pedal1Activo = !pedal1Activo;
+        
 
       
         if (pedal1Activo) {
@@ -49,7 +34,10 @@ public class bicicleta extends javax.swing.JFrame {
     private void updateIndicators() {
          a++;
         jLabel3.setText(String.valueOf(a));
-      
+        
+        metros = pedalPresi+2; 
+        
+        speed = metros / a;
         
         
         Velocidad.setText("Velocidad: " + speed + " km/h");
