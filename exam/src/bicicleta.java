@@ -5,11 +5,12 @@ public class bicicleta extends javax.swing.JFrame {
  
     private int speed = 0;
     private int metros = 0;
+     private int distancia = 0;
     private int pedalPresi = 0;
     private boolean pedal1Activo = true;
    
     int a;
-     Timer tiempo = new Timer(1000, e -> updateIndicators());
+     Timer tiempo = new Timer(2000, e -> updateIndicators());
     
     public bicicleta() {
         initComponents();
@@ -19,7 +20,20 @@ public class bicicleta extends javax.swing.JFrame {
       
         pedalPresi++;
          pedal1Activo = !pedal1Activo;
+          
+         metros = pedalPresi; 
         
+        if (metros > 10 && metros < 20  ){
+        speed +=5;
+        }
+        else{
+            speed +=1;
+        }
+        
+        if (speed > 1 ){
+             
+            distancia = speed * 2;
+        }
 
       
         if (pedal1Activo) {
@@ -35,13 +49,10 @@ public class bicicleta extends javax.swing.JFrame {
          a++;
         jLabel3.setText(String.valueOf(a));
         
-        metros = pedalPresi+2; 
+      
         
-        speed = metros / a;
-        
-        
-        Velocidad.setText("Velocidad: " + speed + " km/h");
-        Calorias.setText("Metros: " + metros + " metros");
+        Velocidad.setText("Velocidad: " + speed + " m/s");
+        Calorias.setText("Metros: " + distancia + " metros");
 
        
         Numero.setText("pedalazos : " + pedalPresi);
